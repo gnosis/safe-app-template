@@ -55,7 +55,10 @@ export const useSafeNetwork = (): Networks | undefined => {
   return network;
 };
 
-export const useSendTransactions = (): ((txs: Transaction[], requestId?: RequestId) => SentSDKMessage<SDK_MESSAGES.SEND_TRANSACTIONS>) => {
+export const useSendTransactions = (): ((
+  txs: Transaction[],
+  requestId?: RequestId,
+) => SentSDKMessage<"SEND_TRANSACTIONS">) => {
   const { sendTransactions } = useAppsSdk();
   return sendTransactions;
 };
