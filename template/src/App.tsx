@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Transaction } from "@gnosis.pm/safe-apps-sdk";
 import { Button, Loader, Text, Title } from "@gnosis.pm/safe-react-components";
-import { useSafeApp } from "./SafeAppProvider";
+import { useSafeInfo, useSendTransactions } from "./SafeAppProvider";
 
 const Container = styled.form`
   margin-bottom: 2rem;
@@ -16,7 +16,8 @@ const Container = styled.form`
 `;
 
 const App: React.FC = () => {
-  const { appsSdk, safeInfo } = useSafeApp();
+  const safeInfo = useSafeInfo();
+  const sendTransactions = useSendTransactions()
 
   const handleClick = () => {
     // just an example, this is not a valid transaction
@@ -28,7 +29,7 @@ const App: React.FC = () => {
       } as Transaction,
     ];
 
-    appsSdk?.sendTransactions(txs);
+    sendTransactions(txs);
   };
 
   if (!safeInfo) {

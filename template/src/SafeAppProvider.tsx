@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import initSdk, { SdkInstance, SafeInfo } from "@gnosis.pm/safe-apps-sdk";
+import initSdk, { Networks, RequestId, SdkInstance, SDK_MESSAGES, SafeInfo, SentSDKMessage, Transaction } from "@gnosis.pm/safe-apps-sdk";
 
 interface State {
   appsSdk: SdkInstance | undefined;
@@ -33,6 +33,31 @@ const SafeAppProvider: React.FC = ({ children }) => {
       {children}
     </stateCtx.Provider>
   );
+};
+
+export const useSafeInfo = (): SafeInfo | undefined => {
+  const { safeInfo } = useSafeApp();
+  return safeInfo;
+};
+
+export const useAppsSdk = (): SdkInstance => {
+  const { appsSdk } = useSafeApp();
+  return appsSdk;
+};
+
+export const useSafeAddress = (): string | undefined => {
+  const { safeAddress } = useSafeInfo() || {};
+  return safeAddress;
+};
+
+export const useSafeNetwork = (): Networks | undefined => {
+  const { network } = useSafeInfo() || {};
+  return network;
+};
+
+export const useSendTransactions = (): ((txs: Transaction[], requestId?: RequestId) => SentSDKMessage<SDK_MESSAGES.SEND_TRANSACTIONS>) => {
+  const { sendTransactions } = useAppsSdk();
+  return sendTransactions;
 };
 
 export default SafeAppProvider;
