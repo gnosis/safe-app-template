@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useCallback, useState } from 'react';
 import styled from "styled-components";
-import { Transaction } from "@gnosis.pm/safe-apps-sdk";
-import { Button, Loader, Text, Title } from "@gnosis.pm/safe-react-components";
-import { useSafeApp } from "./SafeAppProvider";
+import { Button, Loader, Title } from "@gnosis.pm/safe-react-components";
+import { useSafe } from '@rmeissner/safe-apps-react-sdk';
 
 const Container = styled.form`
   margin-bottom: 2rem;
@@ -16,41 +15,37 @@ const Container = styled.form`
 `;
 
 const App: React.FC = () => {
-  const { appsSdk, safeInfo } = useSafeApp();
-
-  const handleClick = () => {
-    // just an example, this is not a valid transaction
-    const txs = [
-      {
-        to: "",
-        value: "0",
-        data: "",
-      } as Transaction,
-    ];
-
-    appsSdk?.sendTransactions(txs);
-  };
-
-  if (!safeInfo) {
-    return <Loader size="md" />;
-  }
-
-  return (
-    <Container>
-      <Title size="sm">Gnosis Safe App Starter</Title>
-
-      <Text size="lg">Click button to submit transaction</Text>
-
-      <Button
-        color="primary"
-        size="lg"
-        variant="contained"
-        onClick={handleClick}
-      >
-        Trigger dummy tx
-      </Button>
-    </Container>
-  );
+  const safe = useSafe()  
+  const [submitting, setSubmitting] = useState(false)
+  const submitTx = useCallback(async () => {
+    setSubmitting(true)
+    try {
+      const safeTxHash = await safe.sendTransactions([
+        {
+          "to": safe.info.safeAddress,
+          "value": "0",
+          "data": "0x"
+        }
+      ])
+      console.log({safeTxHash})
+      const safeTx = await safe.loadSafeTransaction(safeTxHash)
+      console.log({safeTx})
+    } catch (e) {
+      console.error(e)
+    }
+    setSubmitting(false)
+  }, [safe])
+  return <Container>
+    <Title size="md">{safe.info.safeAddress}</Title>
+    {submitting ? 
+    <>
+      <Loader size="md" /><br/>
+      <Button size="lg" color="secondary" onClick={() => {setSubmitting(false)}}>Cancel</Button>
+    </>
+    : 
+    <Button size="lg" color="primary" onClick={submitTx}>Submit</Button>
+    }
+  </Container>
 };
 
 export default App;
