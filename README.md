@@ -1,4 +1,5 @@
 # Gnosis Safe App React Template
+[![npm version](https://badge.fury.io/js/%40gnosis.pm%2Fcra-template-safe-app.svg)](https://badge.fury.io/js/%40gnosis.pm%2Fcra-template-safe-app)
 
 This [CRA template](https://create-react-app.dev/docs/custom-templates/) provides an easy start to the Gnosis Safe App development. 
 
