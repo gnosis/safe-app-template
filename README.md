@@ -1,3 +1,6 @@
+## ⚠️ This is a legacy repo ⚠️
+The code moved to https://github.com/gnosis/safe-apps-sdk/tree/master/packages/cra-template-safe-app ➡️
+
 # Gnosis Safe App React Template
 [![npm version](https://badge.fury.io/js/%40gnosis.pm%2Fcra-template-safe-app.svg)](https://badge.fury.io/js/%40gnosis.pm%2Fcra-template-safe-app)
 
